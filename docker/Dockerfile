@@ -5,7 +5,7 @@ RUN pip install -r requirements.txt && rm ./requirements.txt
 RUN pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
 RUN git clone https://github.com/NVIDIA/apex.git &&\
     cd apex &&\
-    pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" . &&\
+    python3.8 -m pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" . &&\
     rm -rf ../apex
 
 #### detectron 2 installation
@@ -47,7 +47,7 @@ RUN bash -c "chmod -R 600 /etc/ssh/ && chmod 600 /var/run/sshd/ && chmod 600 /ro
 
 # use the faster pillow-simd instead of the original pillow
 # https://github.com/uploadcare/pillow-simd
-RUN pip uninstall pillow && \
+RUN pip uninstall -y pillow && \
 CC="cc -mavx2" pip install -U --force-reinstall pillow-simd
 
 WORKDIR /clipbert

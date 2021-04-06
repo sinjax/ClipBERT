@@ -10,7 +10,7 @@ import torch
 from torch import nn
 from src.modeling.grid_feats import add_attribute_config
 import os
-import horovod.torch as hvd
+# import horovod.torch as hvd
 
 
 def conv3x3(in_planes, out_planes, stride=1, groups=1, dilation=1,
@@ -55,7 +55,8 @@ class GridFeatBackbone(nn.Module):
         """
         Create configs and perform basic setups.
         """
-        rank = hvd.rank()
+        # rank = hvd.rank()
+        rank = 0
         detectron2_cfg = get_cfg()
         add_attribute_config(detectron2_cfg)
         detectron2_cfg.merge_from_file(config_file)
@@ -86,7 +87,7 @@ class GridFeatBackbone(nn.Module):
     def train(self, mode=True):
         super(GridFeatBackbone, self).train(mode)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor):
         bsz, n_frms, c, h, w = x.shape
         x = x.view(bsz*n_frms, c, h, w)
         if self.input_format == "BGR":

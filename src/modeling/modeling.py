@@ -9,8 +9,8 @@ from torch.nn import CrossEntropyLoss, MSELoss
 from .transformers import BertPreTrainedModel
 from .transformers import (
     BertPreTrainingHeads, BertEmbeddings, BertEncoder, BertPooler)
-from apex.normalization.fused_layer_norm import FusedLayerNorm as LayerNorm
-
+# from apex.normalization.fused_layer_norm import FusedLayerNorm as LayerNorm
+from torch.nn import LayerNorm
 
 def get_random_sample_indices(
         seq_len, num_samples=100, device=torch.device("cpu")):
@@ -303,7 +303,10 @@ class ClipBertForPreTraining(BertPreTrainedModel):
             mlm_labels=mlm_labels,  # (B, Lt), with -100 indicates ignored positions
             itm_scores=seq_relationship_score,  # (B, 2)
             itm_loss=itm_loss,  # (B, )
-            itm_labels=itm_labels  # (B, )
+            itm_labels=itm_labels,  # (B, )
+            sequence_output=sequence_output,
+            pooled_output=pooled_output
+
         )
 
 
